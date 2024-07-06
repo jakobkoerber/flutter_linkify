@@ -54,7 +54,7 @@ class Linkify extends StatelessWidget {
   final TextOverflow? overflow;
 
   /// The number of font pixels for each logical pixel
-  final double textScaleFactor;
+  final double? textScaleFactor;
 
   /// Whether the text should break at soft line breaks.
   final bool softWrap;
@@ -75,7 +75,7 @@ class Linkify extends StatelessWidget {
   final bool useMouseRegion;
 
   const Linkify({
-    Key? key,
+    super.key,
     required this.text,
     this.linkifiers = defaultLinkifiers,
     this.onOpen,
@@ -88,14 +88,14 @@ class Linkify extends StatelessWidget {
     this.textDirection,
     this.maxLines,
     this.overflow = TextOverflow.clip,
-    this.textScaleFactor = 1.0,
+    this.textScaleFactor,
     this.softWrap = true,
     this.strutStyle,
     this.locale,
     this.textWidthBasis = TextWidthBasis.parent,
     this.textHeightBehavior,
     this.useMouseRegion = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +122,11 @@ class Linkify extends StatelessWidget {
       textDirection: textDirection,
       maxLines: maxLines,
       overflow: overflow,
-      textScaleFactor: textScaleFactor,
+      textScaler: textScaleFactor != null
+          ? TextScaler.linear(
+              textScaleFactor!,
+            )
+          : null,
       softWrap: softWrap,
       strutStyle: strutStyle,
       locale: locale,
@@ -138,7 +142,7 @@ class SelectableLinkify extends StatelessWidget {
   final String text;
 
   /// The number of font pixels for each logical pixel
-  final double textScaleFactor;
+  final double? textScaleFactor;
 
   /// Linkifiers to be used for linkify
   final List<Linkifier> linkifiers;
@@ -227,7 +231,7 @@ class SelectableLinkify extends StatelessWidget {
   final bool useMouseRegion;
 
   const SelectableLinkify({
-    Key? key,
+    super.key,
     required this.text,
     this.linkifiers = defaultLinkifiers,
     this.onOpen,
@@ -242,7 +246,7 @@ class SelectableLinkify extends StatelessWidget {
     this.maxLines,
     // SelectableText
     this.focusNode,
-    this.textScaleFactor = 1.0,
+    this.textScaleFactor,
     this.strutStyle,
     this.showCursor = false,
     this.autofocus = false,
@@ -260,7 +264,7 @@ class SelectableLinkify extends StatelessWidget {
     this.selectionControls,
     this.onSelectionChanged,
     this.useMouseRegion = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -290,9 +294,13 @@ class SelectableLinkify extends StatelessWidget {
       focusNode: focusNode,
       strutStyle: strutStyle,
       showCursor: showCursor,
-      textScaleFactor: textScaleFactor,
+      textScaler: textScaleFactor != null
+          ? TextScaler.linear(
+              textScaleFactor!,
+            )
+          : null,
       autofocus: autofocus,
-      contextMenuBuilder: contextMenuBuilder,
+      contextMenuBuilder: contextMenuBuilder ?? defaultContextMenuBuilder,
       cursorWidth: cursorWidth,
       cursorRadius: cursorRadius,
       cursorColor: cursorColor,
@@ -392,4 +400,13 @@ class LinkifySpan extends TextSpan {
             useMouseRegion: useMouseRegion,
           ),
         );
+}
+
+Widget defaultContextMenuBuilder(
+  BuildContext context,
+  EditableTextState editableTextState,
+) {
+  return AdaptiveTextSelectionToolbar.editableText(
+    editableTextState: editableTextState,
+  );
 }

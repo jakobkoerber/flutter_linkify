@@ -8,7 +8,7 @@ void main() {
       home: SelectableLinkify(
         text: 'Test https://google.com',
       ),
-    ));
+    ),);
 
     expect(find.text('Test google.com'), findsOneWidget);
   });
@@ -22,7 +22,7 @@ void main() {
           humanize: false,
         ),
       ),
-    ));
+    ),);
 
     expect(find.text('Test https://google.com'), findsOneWidget);
   });
@@ -35,7 +35,7 @@ void main() {
           looseUrl: true,
         ),
       ),
-    ));
+    ),);
 
     expect(find.text('Test google.com'), findsOneWidget);
   });
@@ -45,7 +45,7 @@ void main() {
       home: SelectableLinkify(
         text: 'Test www.google.com',
       ),
-    ));
+    ),);
 
     expect(find.text('Test www.google.com'), findsOneWidget);
   });
@@ -58,7 +58,7 @@ void main() {
           removeWww: true,
         ),
       ),
-    ));
+    ),);
 
     expect(find.text('Test google.com'), findsOneWidget);
   });
